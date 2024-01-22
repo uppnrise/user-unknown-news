@@ -45,6 +45,10 @@ const Container = styled.div`
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     overflow: hidden;
+
+    h2 {
+      margin-left: 12px;
+    }
   }
 
   // Styling for elements with the class 'news-item'
