@@ -21,7 +21,7 @@ describe('App Component', () => {
     // Mock the fetch response
     const mockNewsData = {
       technology: [{ id: 1, title: 'Tech News Item' }],
-      sports: [{ id: 2, title: 'Sports News Item' }]
+      sports: [{ id: 2, title: 'Sports News Item' }],
     };
 
     fetchMock.mockResponseOnce(JSON.stringify(mockNewsData));
@@ -31,6 +31,8 @@ describe('App Component', () => {
     // Wait for the effect to run and the state to update
     await waitFor(() => {
       expect(screen.getByText('Tech News Item')).toBeInTheDocument();
+    });
+    await waitFor(() => {
       expect(screen.getByText('Sports News Item')).toBeInTheDocument();
     });
   });
