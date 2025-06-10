@@ -1,55 +1,88 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense } from 'react';
 import Container from './components/Container';
-import NewsList from './components/NewsList';
+import SkipLink from './components/SkipLink';
+import PWAInstallPrompt from './components/PWAInstallPrompt';
+import OnlineOfflineIndicator from './components/OnlineOfflineIndicator';
+import PerformanceMetrics from './components/PerformanceMetrics';
 import { NewsItem } from './types';
+import { config } from './config';
+import { useApi } from './hooks/useApi';
+
+// Lazy load NewsList component for better performance
+const NewsList = React.lazy(() => import('./components/NewsList'));
 
 // Defining the App component as a functional component using React.FC (Functional Component) type
 const App: React.FC = () => {
-  // State hook for managing news data. It's initialized as an empty object.
-  // The state will eventually hold a record where each key is a string and its value is an array of NewsItem objects.
-  const [newsData, setNewsData] = useState<Record<string, NewsItem[]>>({});
-
-  // useEffect hook to perform side effects (data fetching in this case).
-  useEffect(() => {
-    // Defining an asynchronous function inside the useEffect hook for fetching news data.
-    const fetchNews = async () => {
-      try {
-        // Fetching data from the API endpoint. Await is used to wait for the Promise to resolve.
-        const response = await fetch('https://ok.surf/api/v1/cors/news-feed');
-
-        // Checking if the response is not OK, then throwing an error.
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        // Parsing the JSON response and waiting for the Promise to resolve.
-        const data = await response.json();
-
-        // Updating the newsData state with the fetched data.
-        setNewsData(data);
-      } catch (error) {
-        // Catching any errors during fetch or JSON parsing and logging them to the console.
-        console.error('Error fetching news:', error);
-      }
-    };
-
-    // Calling the fetchNews function.
-    fetchNews();
-  }, []); // The empty dependency array means this effect runs once after the first render.
+  // Using the custom useApi hook for data fetching with retry logic and error handling
+  const {
+    data: newsData,
+    loading,
+    error,
+    refetch,
+  } = useApi<Record<string, NewsItem[]>>(config.api.newsUrl);
 
   // The render method of the component.
   return (
-    // Using the Container component to wrap the content.
-    <Container>
-      {/* // Displaying a heading */}
-      <h1>Latest News</h1>
-      {/* // Mapping over the keys of newsData object. Each key represents a news category. */}
-      {Object.keys(newsData).map((category) => (
-        // Rendering the NewsList component for each news category.
-        // The 'key' prop is necessary for React to handle list rendering efficiently.
-        <NewsList key={category} category={category} newsItems={newsData[category]} />
-      ))}
-    </Container>
+    <>
+      <OnlineOfflineIndicator />
+      <SkipLink />
+      <PWAInstallPrompt />
+      {process.env.NODE_ENV === 'development' && <PerformanceMetrics />}
+      {/* Using the Container component to wrap the content. */}
+      <Container>
+        <main id="main-content" role="main">
+          {/* // Displaying a heading */}
+          <h1>Latest News</h1>
+
+          {/* Loading state */}
+          {loading && (
+            <div className="loading-container">
+              <div className="loading-spinner"></div>
+              <p>Loading latest news...</p>
+            </div>
+          )}
+
+          {/* Error state */}
+          {error && (
+            <div className="error-container">
+              <h3>Failed to load news</h3>
+              <p>{error}</p>
+              <button onClick={refetch}>Try Again</button>
+            </div>
+          )}
+
+          {/* News content */}
+          {!loading && !error && (
+            <>
+              {!newsData || Object.keys(newsData).length === 0 ? (
+                <div className="no-news">
+                  <p>No news available at the moment.</p>
+                </div>
+              ) : (
+                // Wrapping NewsList rendering in React Suspense for lazy loading
+                <Suspense
+                  fallback={
+                    <div className="loading-spinner">
+                      Loading news categories...
+                    </div>
+                  }
+                >
+                  {Object.keys(newsData).map(category => (
+                    // Rendering the NewsList component for each news category.
+                    // The 'key' prop is necessary for React to handle list rendering efficiently.
+                    <NewsList
+                      key={category}
+                      category={category}
+                      newsItems={newsData[category]}
+                    />
+                  ))}
+                </Suspense>
+              )}
+            </>
+          )}
+        </main>
+      </Container>
+    </>
   );
 };
 
