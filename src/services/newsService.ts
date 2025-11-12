@@ -175,8 +175,15 @@ export async function fetchNews(
       }
     });
 
-    // If all sources failed, throw error
+    // If all sources failed, use mock data in development
     if (successfulSources.length === 0) {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(
+          'All news sources failed. Using mock data for development.'
+        );
+        const { mockNewsData, mockGermanNewsData } = await import('./mockData');
+        return language === 'de' ? mockGermanNewsData : mockNewsData;
+      }
       throw new Error('All news sources failed to load');
     }
 
