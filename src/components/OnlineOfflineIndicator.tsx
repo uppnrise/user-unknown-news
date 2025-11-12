@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useOnlineStatus } from '../hooks/useOnlineStatus';
+import { useLanguage } from '../context/LanguageContext';
 
 const OfflineIndicator = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background: #ff6b6b;
+  background: var(--danger-color);
   color: white;
   padding: 8px;
   text-align: center;
@@ -28,11 +29,16 @@ const OfflineIndicator = styled.div`
 
 const OnlineOfflineIndicator: React.FC = () => {
   const isOnline = useOnlineStatus();
+  const { t } = useLanguage();
 
   return (
-    <OfflineIndicator className={!isOnline ? 'offline' : ''}>
+    <OfflineIndicator
+      className={!isOnline ? 'offline' : ''}
+      role="status"
+      aria-live="polite"
+    >
       <span className="offline-icon">📶</span>
-      You are currently offline. Some features may not be available.
+      {t('offline.message')}
     </OfflineIndicator>
   );
 };
