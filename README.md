@@ -1,6 +1,6 @@
 # User Unknown's News 📰 
 
-A modern, high-performance Progressive Web App (PWA) built with React that delivers the latest news with an exceptional user experience across all devices and network conditions.
+A modern, high-performance Progressive Web App (PWA) built with React that delivers the latest news with an exceptional user experience across all devices and network conditions. **Now with German news support and dark mode!**
 
 ![React](https://img.shields.io/badge/React-19.1.0-blue?logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-4.9.5-blue?logo=typescript)
@@ -10,7 +10,31 @@ A modern, high-performance Progressive Web App (PWA) built with React that deliv
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
+## 🎉 What's New in v2.0
+
+- 🌍 **Multi-Language Support**: Switch between English and German with one click
+- 🌙 **Dark Mode**: Beautiful dark theme with system preference detection
+- 🔄 **Multi-Source News**: Aggregates news from multiple APIs for comprehensive coverage
+- 🔍 **Search & Filter**: Find news quickly with search and category filtering
+- 🎨 **Modern UI**: Completely redesigned interface with smooth animations
+- 🇩🇪 **German News**: Dedicated German news support from NewsAPI.org and NewsData.io
+
 ## ✨ Features
+
+### 🌐 Multi-Language & Multi-Source
+- 🇬🇧 **English News**: Latest headlines from global sources
+- 🇩🇪 **German News**: Deutsche Nachrichten from NewsAPI.org and NewsData.io
+- 🔄 **Multi-Source Aggregation**: Combines news from ok.surf, NewsAPI, and NewsData
+- 🌍 **Instant Language Switch**: Toggle between English and German seamlessly
+- 📰 **Category-Based Organization**: News organized by Business, Technology, Sports, etc.
+
+### 🎨 Modern UI/UX
+- 🌙 **Dark Mode**: Eye-friendly dark theme with smooth transitions
+- ☀️ **Light Mode**: Clean, bright interface for daytime reading
+- 💻 **System Theme**: Automatically matches your system preferences
+- 🔍 **Advanced Search**: Search across all news articles instantly
+- 🏷️ **Category Filters**: Filter news by specific categories
+- ✨ **Smooth Animations**: Polished transitions and micro-interactions
 
 ### 📱 Progressive Web App (PWA)
 - 🔄 **Offline Support**: Works without internet connection using service workers
@@ -189,11 +213,47 @@ Docker/
 
 ## 🔌 API Documentation
 
-### External API
+### Multi-Source News Aggregation
 
-The application fetches news data from:
+The application fetches news from multiple sources for comprehensive coverage:
+
+#### 1. ok.surf API (Primary Source)
 - **Endpoint**: `https://ok.surf/api/v1/cors/news-feed`
 - **Method**: GET
+- **API Key**: Not required
+- **Language**: English
+- **Features**: Free, no rate limits, reliable CORS support
+
+#### 2. NewsAPI.org (German News)
+- **Endpoint**: `https://newsapi.org/v2/top-headlines`
+- **Method**: GET
+- **API Key**: Required (get free key at https://newsapi.org/register)
+- **Language**: English, German (de)
+- **Features**: 150,000+ sources, category filtering, country-specific news
+- **Environment Variable**: `REACT_APP_NEWSAPI_KEY`
+
+#### 3. NewsData.io (German News)
+- **Endpoint**: `https://newsdata.io/api/1/news`
+- **Method**: GET
+- **API Key**: Required (get free key at https://newsdata.io/register)
+- **Language**: Multilingual including German
+- **Features**: Real-time news, multiple languages, category support
+- **Environment Variable**: `REACT_APP_NEWSDATA_KEY`
+
+### API Key Setup (Optional)
+
+For German news support, add API keys to your `.env` file:
+
+```bash
+# Copy .env.example to .env
+cp .env.example .env
+
+# Add your API keys
+REACT_APP_NEWSAPI_KEY=your_newsapi_key_here
+REACT_APP_NEWSDATA_KEY=your_newsdata_key_here
+```
+
+**Note**: The app works without API keys using only the ok.surf source. API keys enable German news and additional sources.
 - **Response Format**: JSON
 
 ### Data Structure
