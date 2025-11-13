@@ -1,51 +1,62 @@
 import React, { useState, useCallback, memo } from 'react';
 import styled from 'styled-components';
 import { NewsItem } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 // Styled component for the wrapper around the show more/less button
 const NewsItemWrapper = styled.div`
   .toggle-show {
-    padding: 10px; // Padding for the button
-    text-align: center; // Centers the text inside the button
-    cursor: pointer; // Changes cursor to pointer to indicate it's clickable
-    color: #007bff; // Sets the text color of the button
-    transition: color 0.2s ease;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    color: var(--primary-color);
+    transition: all 0.2s ease;
     font-weight: 500;
+    border-radius: 8px;
 
     &:hover {
-      color: #0056b3;
-      background-color: #f8f9fa;
+      background-color: var(--hover-bg);
     }
   }
 
   .image-placeholder {
-    width: 60px;
-    height: 60px;
-    background-color: #f8f9fa;
-    border: 2px dashed #dee2e6;
-    border-radius: 5px;
+    width: 80px;
+    height: 80px;
+    background-color: var(--bg-secondary);
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 15px;
     flex-shrink: 0;
 
     span {
-      font-size: 24px;
+      font-size: 32px;
       opacity: 0.6;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .image-placeholder {
+      width: 60px;
+      height: 60px;
+
+      span {
+        font-size: 24px;
+      }
     }
   }
 `;
 
 // TypeScript type definition for the component's props
 type NewsListProps = {
-  category: string; // The category of news
-  newsItems: NewsItem[]; // Array of news items
+  category: string;
+  newsItems: NewsItem[];
 };
 
 // Functional component declaration with destructured props
 const NewsList = memo<NewsListProps>(({ category, newsItems }) => {
-  // useState hook to manage whether all news items are shown
+  const { t } = useLanguage();
   const [showAll, setShowAll] = useState(false);
   const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
 
@@ -67,16 +78,15 @@ const NewsList = memo<NewsListProps>(({ category, newsItems }) => {
     <div className="news-category">
       <h2>{category}</h2>
       {displayedNewsItems.map((item, index) => (
-        // Mapping over and rendering each displayed news item
         <a
           key={index}
           href={item.link}
           className="news-item"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`Read more about: ${item.title}`}
+          aria-label={`${t('news.readMore')} ${item.title}`}
         >
-          {!imageErrors.has(index) ? (
+          {!imageErrors.has(index) && item.og ? (
             <img
               src={item.og}
               alt={item.title}
@@ -84,17 +94,18 @@ const NewsList = memo<NewsListProps>(({ category, newsItems }) => {
               loading="lazy"
             />
           ) : (
-            <div className="image-placeholder">
-              <span>📰</span>
-            </div>
+            <NewsItemWrapper>
+              <div className="image-placeholder">
+                <span>📰</span>
+              </div>
+            </NewsItemWrapper>
           )}
           <div className="title">{item.title}</div>
         </a>
       ))}
-      {newsItems.length > 3 && ( // Conditionally render the toggle button
+      {newsItems.length > 3 && (
         <NewsItemWrapper>
           {showAll ? (
-            // Button to show less items
             <div
               className="toggle-show"
               onClick={handleToggleShowAll}
@@ -103,10 +114,9 @@ const NewsList = memo<NewsListProps>(({ category, newsItems }) => {
               onKeyDown={e => e.key === 'Enter' && handleToggleShowAll()}
               aria-label={`Show fewer ${category} news items`}
             >
-              Show Less
+              {t('news.showLess')}
             </div>
           ) : (
-            // Button to show more items
             <div
               className="toggle-show"
               onClick={handleToggleShowAll}
@@ -115,7 +125,7 @@ const NewsList = memo<NewsListProps>(({ category, newsItems }) => {
               onKeyDown={e => e.key === 'Enter' && handleToggleShowAll()}
               aria-label={`Show more ${category} news items`}
             >
-              Show More ({newsItems.length - 3} more)
+              {t('news.showMore')} ({newsItems.length - 3} more)
             </div>
           )}
         </NewsItemWrapper>
