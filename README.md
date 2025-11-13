@@ -99,6 +99,8 @@ npm run docker:dev
 npm run docker:prod
 ```
 
+**Note:** These commands use `docker compose` (Docker Compose V2). If you have an older Docker installation with `docker-compose` (V1), update the scripts in `package.json` to use `docker-compose` instead of `docker compose`.
+
 ### 📦 Local Development
 
 #### Prerequisites
@@ -396,7 +398,7 @@ npm run analyze
 #### Production Deployment
 ```bash
 # Build and run production container
-docker-compose up app
+docker compose up app
 
 # Or manually
 docker build -t user-unknown-news .
@@ -406,8 +408,10 @@ docker run -p 80:80 user-unknown-news
 #### Development Deployment
 ```bash
 # Development with hot reload
-docker-compose --profile dev up app-dev
+docker compose --profile dev up app-dev
 ```
+
+**Note:** If you have Docker Compose V1 installed (older version), replace `docker compose` with `docker-compose` in the commands above.
 
 ### Manual Deployment
 
