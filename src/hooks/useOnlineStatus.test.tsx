@@ -6,7 +6,7 @@ describe('useOnlineStatus', () => {
     // Mock navigator.onLine
     Object.defineProperty(navigator, 'onLine', {
       writable: true,
-      value: true
+      value: true,
     });
 
     const { result } = renderHook(() => useOnlineStatus());
@@ -16,7 +16,7 @@ describe('useOnlineStatus', () => {
   test('returns offline status when navigator is offline', () => {
     Object.defineProperty(navigator, 'onLine', {
       writable: true,
-      value: false
+      value: false,
     });
 
     const { result } = renderHook(() => useOnlineStatus());
@@ -26,7 +26,7 @@ describe('useOnlineStatus', () => {
   test('updates status when online event is fired', () => {
     Object.defineProperty(navigator, 'onLine', {
       writable: true,
-      value: false
+      value: false,
     });
 
     const { result } = renderHook(() => useOnlineStatus());
@@ -35,9 +35,9 @@ describe('useOnlineStatus', () => {
     act(() => {
       Object.defineProperty(navigator, 'onLine', {
         writable: true,
-        value: true
+        value: true,
       });
-      
+
       const onlineEvent = new Event('online');
       window.dispatchEvent(onlineEvent);
     });
@@ -48,7 +48,7 @@ describe('useOnlineStatus', () => {
   test('updates status when offline event is fired', () => {
     Object.defineProperty(navigator, 'onLine', {
       writable: true,
-      value: true
+      value: true,
     });
 
     const { result } = renderHook(() => useOnlineStatus());
@@ -57,9 +57,9 @@ describe('useOnlineStatus', () => {
     act(() => {
       Object.defineProperty(navigator, 'onLine', {
         writable: true,
-        value: false
+        value: false,
       });
-      
+
       const offlineEvent = new Event('offline');
       window.dispatchEvent(offlineEvent);
     });
