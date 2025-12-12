@@ -1,6 +1,8 @@
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/dom';
 import '@testing-library/jest-dom';
 import NewsList from './NewsList';
+import { LanguageProvider } from '../context/LanguageContext';
 
 describe('NewsList Component', () => {
   const mockNewsItems = [
@@ -11,7 +13,11 @@ describe('NewsList Component', () => {
   ];
 
   test('renders news items and a show more button for more than three items', () => {
-    render(<NewsList category="Technology" newsItems={mockNewsItems} />);
+    render(
+      <LanguageProvider>
+        <NewsList category="Technology" newsItems={mockNewsItems} />
+      </LanguageProvider>
+    );
 
     expect(screen.getByText('Technology')).toBeInTheDocument();
     expect(screen.getAllByRole('link')).toHaveLength(3); // Using getAllByRole for anchor tags
@@ -19,7 +25,11 @@ describe('NewsList Component', () => {
   });
 
   test('shows all items and a show less button when show more is clicked', () => {
-    render(<NewsList category="Technology" newsItems={mockNewsItems} />);
+    render(
+      <LanguageProvider>
+        <NewsList category="Technology" newsItems={mockNewsItems} />
+      </LanguageProvider>
+    );
 
     fireEvent.click(screen.getByText(/Show More/));
     expect(screen.getAllByRole('link')).toHaveLength(4); // Using getAllByRole for anchor tags
@@ -28,7 +38,11 @@ describe('NewsList Component', () => {
 
   test('does not show show more/less button when items are three or less', () => {
     const lessItems = mockNewsItems.slice(0, 3);
-    render(<NewsList category="Technology" newsItems={lessItems} />);
+    render(
+      <LanguageProvider>
+        <NewsList category="Technology" newsItems={lessItems} />
+      </LanguageProvider>
+    );
 
     expect(screen.queryByText(/Show More/)).not.toBeInTheDocument();
     expect(screen.queryByText('Show Less')).not.toBeInTheDocument();
