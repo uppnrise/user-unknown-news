@@ -6,14 +6,16 @@ import { LanguageProvider } from '../context/LanguageContext';
 
 // Mock the useOnlineStatus hook
 jest.mock('../hooks/useOnlineStatus', () => ({
-  useOnlineStatus: jest.fn()
+  useOnlineStatus: jest.fn(),
 }));
 
 import { useOnlineStatus } from '../hooks/useOnlineStatus';
 
-const mockUseOnlineStatus = useOnlineStatus as jest.MockedFunction<typeof useOnlineStatus>;
+const mockUseOnlineStatus = useOnlineStatus as jest.MockedFunction<
+  typeof useOnlineStatus
+>;
 
-export {};  // Make this a module
+export {}; // Make this a module
 
 describe('OnlineOfflineIndicator', () => {
   test('renders but hidden when online', () => {
