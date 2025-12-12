@@ -1,6 +1,8 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import { screen } from '@testing-library/dom';
 import OnlineOfflineIndicator from './OnlineOfflineIndicator';
+import { LanguageProvider } from '../context/LanguageContext';
 
 // Mock the useOnlineStatus hook
 jest.mock('../hooks/useOnlineStatus', () => ({
@@ -16,32 +18,42 @@ const mockUseOnlineStatus = useOnlineStatus as jest.MockedFunction<
 export {}; // Make this a module
 
 describe('OnlineOfflineIndicator', () => {
-  test('shows online status when connected', () => {
+  test('renders but hidden when online', () => {
     mockUseOnlineStatus.mockReturnValue(true);
 
-    render(<OnlineOfflineIndicator />);
+    render(
+      <LanguageProvider>
+        <OnlineOfflineIndicator />
+      </LanguageProvider>
+    );
 
-    expect(screen.getByText('● Online')).toBeInTheDocument();
-    expect(screen.getByText('● Online')).toHaveStyle({
-      backgroundColor: '#4CAF50',
-    });
+    // Component renders but without offline class when online
+    const indicator = screen.getByRole('status');
+    expect(indicator).toBeInTheDocument();
+    expect(indicator).not.toHaveClass('offline');
   });
 
   test('shows offline status when disconnected', () => {
     mockUseOnlineStatus.mockReturnValue(false);
 
-    render(<OnlineOfflineIndicator />);
+    render(
+      <LanguageProvider>
+        <OnlineOfflineIndicator />
+      </LanguageProvider>
+    );
 
-    expect(screen.getByText('● Offline')).toBeInTheDocument();
-    expect(screen.getByText('● Offline')).toHaveStyle({
-      backgroundColor: '#f44336',
-    });
+    expect(screen.getByText(/You are currently offline/)).toBeInTheDocument();
+    expect(screen.getByText('📶')).toBeInTheDocument();
   });
 
-  test('has correct accessibility attributes', () => {
-    mockUseOnlineStatus.mockReturnValue(true);
+  test('has correct accessibility attributes when offline', () => {
+    mockUseOnlineStatus.mockReturnValue(false);
 
-    render(<OnlineOfflineIndicator />);
+    render(
+      <LanguageProvider>
+        <OnlineOfflineIndicator />
+      </LanguageProvider>
+    );
 
     const indicator = screen.getByRole('status');
     expect(indicator).toHaveAttribute('aria-live', 'polite');
