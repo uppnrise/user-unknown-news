@@ -30,9 +30,9 @@ const OnlineOfflineIndicator: React.FC = () => {
   const isOnline = useOnlineStatus();
 
   return (
-    <OfflineIndicator 
-      className={!isOnline ? 'offline' : ''} 
-      role="status" 
+    <OfflineIndicator
+      className={!isOnline ? 'offline' : ''}
+      role="status"
       aria-live="polite"
     >
       <span className="offline-icon">📶</span>
