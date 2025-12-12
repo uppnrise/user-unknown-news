@@ -20,6 +20,14 @@ self.addEventListener('install', (event) => {
 
 // Fetch event
 self.addEventListener('fetch', (event) => {
+  // Skip caching for external API requests
+  const url = new URL(event.request.url);
+  if (url.origin !== location.origin) {
+    // For external requests, just fetch without caching
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
@@ -27,9 +35,22 @@ self.addEventListener('fetch', (event) => {
         if (response) {
           return response;
         }
-        return fetch(event.request);
-      }
-    )
+        return fetch(event.request)
+          .then((response) => {
+            // Cache the new response for future use
+            if (response && response.status === 200) {
+              const responseToCache = response.clone();
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+            }
+            return response;
+          });
+      })
+      .catch((error) => {
+        console.error('Fetch failed:', error);
+        throw error;
+      })
   );
 });
 

@@ -4,13 +4,13 @@ import { screen, fireEvent, waitFor } from '@testing-library/dom';
 import { act } from 'react';
 import PWAInstallPrompt from './PWAInstallPrompt';
 
-export {};  // Make this a module
+export {}; // Make this a module
 
 // Mock the beforeinstallprompt event
 const mockPromptEvent = {
   preventDefault: jest.fn(),
   prompt: jest.fn(),
-  userChoice: Promise.resolve({ outcome: 'accepted' })
+  userChoice: Promise.resolve({ outcome: 'accepted' }),
 };
 
 describe('PWAInstallPrompt', () => {
@@ -28,7 +28,7 @@ describe('PWAInstallPrompt', () => {
 
   test('renders install button when beforeinstallprompt event is fired', async () => {
     render(<PWAInstallPrompt />);
-    
+
     // Simulate beforeinstallprompt event
     const event = new Event('beforeinstallprompt');
     Object.assign(event, mockPromptEvent);
@@ -44,7 +44,7 @@ describe('PWAInstallPrompt', () => {
 
   test('calls prompt when install button is clicked', async () => {
     render(<PWAInstallPrompt />);
-    
+
     // Simulate beforeinstallprompt event
     const event = new Event('beforeinstallprompt');
     Object.assign(event, mockPromptEvent);
@@ -67,7 +67,7 @@ describe('PWAInstallPrompt', () => {
 
   test('hides install prompt when app is installed', async () => {
     render(<PWAInstallPrompt />);
-    
+
     // Simulate beforeinstallprompt event
     const beforeEvent = new Event('beforeinstallprompt');
     Object.assign(beforeEvent, mockPromptEvent);
@@ -92,7 +92,7 @@ describe('PWAInstallPrompt', () => {
 
   test('can be dismissed with close button', async () => {
     render(<PWAInstallPrompt />);
-    
+
     // Simulate beforeinstallprompt event
     const event = new Event('beforeinstallprompt');
     Object.assign(event, mockPromptEvent);

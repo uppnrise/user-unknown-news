@@ -2,6 +2,11 @@ export type NewsItem = {
   link: string;
   og: string;
   title: string;
+  description?: string;
+  source?: string;
+  publishedAt?: string;
+  author?: string;
+  category?: string;
 };
 
 export type NewsByCategory = {
@@ -13,8 +18,8 @@ export type NewsListProps = {
   newsItems: NewsItem[];
 };
 
-// App language types
 export type Language = 'en' | 'de';
 
-// Theme mode types
+export type NewsSource = 'oksurfen' | 'newsapi' | 'newsdata';
+
 export type ThemeMode = 'light' | 'dark' | 'system';

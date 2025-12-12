@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { screen, fireEvent } from '@testing-library/dom';
 import SkipLink from './SkipLink';
 
-export {};  // Make this a module
+export {}; // Make this a module
 
 describe('SkipLink', () => {
   test('renders skip link with correct text', () => {
@@ -27,11 +27,11 @@ describe('SkipLink', () => {
   test('becomes visible when focused', () => {
     render(<SkipLink />);
     const skipLink = screen.getByRole('link');
-    
+
     // Initially should be visually hidden
     expect(skipLink).toHaveStyle({
       position: 'absolute',
-      top: '-40px'
+      top: '-40px',
     });
 
     // Focus the link

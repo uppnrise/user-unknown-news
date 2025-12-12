@@ -31,8 +31,8 @@
     "format:check": "prettier --check \"src/**/*.{ts,tsx,json,css,md}\"",
     "docker:build": "docker build -t user-unknown-news .",
     "docker:run": "docker run -p 3000:80 user-unknown-news",
-    "docker:dev": "docker-compose --profile dev up app-dev",
-    "docker:prod": "docker-compose up app",
+    "docker:dev": "docker compose --profile dev up app-dev",
+    "docker:prod": "docker compose up app",
     "analyze": "npm run build && npx bundle-analyzer build/static/js/*.js",
     "type-check": "tsc --noEmit"
   },

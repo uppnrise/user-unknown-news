@@ -1,14 +1,14 @@
 import { renderHook, act } from '@testing-library/react';
 import { useOnlineStatus } from './useOnlineStatus';
 
-export {};  // Make this a module
+export {}; // Make this a module
 
 describe('useOnlineStatus', () => {
   test('returns initial online status', () => {
     // Mock navigator.onLine
     Object.defineProperty(navigator, 'onLine', {
       writable: true,
-      value: true
+      value: true,
     });
 
     const { result } = renderHook(() => useOnlineStatus());
@@ -18,7 +18,7 @@ describe('useOnlineStatus', () => {
   test('returns offline status when navigator is offline', () => {
     Object.defineProperty(navigator, 'onLine', {
       writable: true,
-      value: false
+      value: false,
     });
 
     const { result } = renderHook(() => useOnlineStatus());
@@ -28,7 +28,7 @@ describe('useOnlineStatus', () => {
   test('updates status when online event is fired', () => {
     Object.defineProperty(navigator, 'onLine', {
       writable: true,
-      value: false
+      value: false,
     });
 
     const { result } = renderHook(() => useOnlineStatus());
@@ -37,9 +37,9 @@ describe('useOnlineStatus', () => {
     act(() => {
       Object.defineProperty(navigator, 'onLine', {
         writable: true,
-        value: true
+        value: true,
       });
-      
+
       const onlineEvent = new Event('online');
       window.dispatchEvent(onlineEvent);
     });
@@ -50,7 +50,7 @@ describe('useOnlineStatus', () => {
   test('updates status when offline event is fired', () => {
     Object.defineProperty(navigator, 'onLine', {
       writable: true,
-      value: true
+      value: true,
     });
 
     const { result } = renderHook(() => useOnlineStatus());
@@ -59,9 +59,9 @@ describe('useOnlineStatus', () => {
     act(() => {
       Object.defineProperty(navigator, 'onLine', {
         writable: true,
-        value: false
+        value: false,
       });
-      
+
       const offlineEvent = new Event('offline');
       window.dispatchEvent(offlineEvent);
     });
