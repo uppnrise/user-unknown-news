@@ -16,6 +16,7 @@ export const config = {
   app: {
     name: process.env.REACT_APP_NAME || "User Unknown's News",
     version: process.env.REACT_APP_VERSION || '1.0.0',
+    defaultLanguage: 'en' as const,
   },
 
   // Performance Configuration
