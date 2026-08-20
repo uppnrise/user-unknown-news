@@ -7,6 +7,33 @@ import { NewsByCategory, Language } from '../types';
 import { config } from '../config';
 
 /**
+ * Raw article shape returned by NewsAPI.org's top-headlines endpoint
+ */
+interface NewsApiArticle {
+  title?: string;
+  url?: string;
+  urlToImage?: string;
+  description?: string;
+  publishedAt?: string;
+  author?: string;
+  source?: { name?: string };
+}
+
+/**
+ * Raw article shape returned by NewsData.io's news endpoint
+ */
+interface NewsDataArticle {
+  title?: string;
+  link?: string;
+  image_url?: string;
+  description?: string;
+  pubDate?: string;
+  creator?: string[];
+  source_id?: string;
+  category?: string[];
+}
+
+/**
  * Fetch news from ok.surf API
  */
 async function fetchOkSurfNews(): Promise<NewsByCategory> {
@@ -50,7 +77,7 @@ async function fetchNewsApiNews(language: Language): Promise<NewsByCategory> {
 
   if (data.articles && Array.isArray(data.articles)) {
     // Group by category or use "Top Headlines"
-    data.articles.forEach((article: any) => {
+    data.articles.forEach((article: NewsApiArticle) => {
       const category = article.source?.name || 'Top Headlines';
 
       if (!newsByCategory[category]) {
@@ -102,7 +129,7 @@ async function fetchNewsDataNews(language: Language): Promise<NewsByCategory> {
   const newsByCategory: NewsByCategory = {};
 
   if (data.results && Array.isArray(data.results)) {
-    data.results.forEach((article: any) => {
+    data.results.forEach((article: NewsDataArticle) => {
       const category = article.category?.[0] || 'General';
 
       if (!newsByCategory[category]) {
