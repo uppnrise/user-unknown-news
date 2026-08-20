@@ -104,12 +104,14 @@ const App: React.FC = () => {
       <OnlineOfflineIndicator />
       <SkipLink />
       <PWAInstallPrompt />
-      <AppControls />
       {process.env.NODE_ENV === 'development' && <PerformanceMetrics />}
 
       <Container>
         <main id="main-content" role="main">
-          <h1>{t('app.title')}</h1>
+          <div className="app-header">
+            <h1>{t('app.title')}</h1>
+            <AppControls />
+          </div>
 
           {/* Search and Filter */}
           {!loading && !error && newsData && (

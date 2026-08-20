@@ -10,8 +10,9 @@ const Container = styled.div`
   // Minimum height of the container set to 100 viewport height units
   min-height: 100vh;
 
-  // Padding around the container
-  padding: 20px;
+  // Padding around the container (extra top space for breathing room above
+  // the header row)
+  padding: 40px 20px 20px;
 
   // Background color set to a light gray for a gentle look
   background-color: #f0f2f5;
@@ -26,9 +27,20 @@ const Container = styled.div`
 
     // Text color set to a darker shade
     color: #1a202c;
+  }
 
-    // Margin added at the bottom for spacing
-    margin-bottom: 1rem;
+  // Header row: aligns the title and the language/theme controls within the
+  // same width as the content column below, instead of floating detached
+  // at the viewport corner.
+  .app-header {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   // Styling for elements with the class 'news-category'
@@ -181,10 +193,14 @@ const Container = styled.div`
 
   // Mobile responsiveness
   @media (max-width: 768px) {
-    padding: 10px;
+    padding: 24px 10px 10px;
 
     h1 {
       font-size: 2rem;
+    }
+
+    .app-header {
+      justify-content: center;
       margin-bottom: 1.5rem;
     }
 

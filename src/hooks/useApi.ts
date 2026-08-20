@@ -14,8 +14,10 @@ interface FetchOptions {
   cacheKey?: string;
 }
 
-// Simple in-memory cache
-const cache = new Map<string, { data: any; timestamp: number }>();
+// Simple in-memory cache. Uses `unknown` since a single module-level cache
+// is shared across calls with different generic types; callers narrow the
+// type via the generic parameter of `useApi<T>`.
+const cache = new Map<string, { data: unknown; timestamp: number }>();
 
 /**
  * Custom hook for API data fetching with retry logic, error handling, and caching
@@ -46,7 +48,7 @@ export function useApi<T>(
       cached &&
       Date.now() - cached.timestamp < config.performance.cacheDuration
     ) {
-      setState({ data: cached.data, loading: false, error: null });
+      setState({ data: cached.data as T, loading: false, error: null });
       return;
     }
 
