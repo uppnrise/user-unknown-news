@@ -8,16 +8,11 @@ import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
 
 const ControlsContainer = styled.div`
-  position: fixed;
-  top: 20px;
-  right: 20px;
   display: flex;
   gap: 12px;
-  z-index: 1000;
+  flex-wrap: wrap;
 
   @media (max-width: 768px) {
-    top: 10px;
-    right: 10px;
     gap: 8px;
   }
 `;
