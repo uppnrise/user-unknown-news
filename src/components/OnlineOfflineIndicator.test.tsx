@@ -1,15 +1,15 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { screen } from '@testing-library/dom';
+import { screen } from '@testing-library/react';
 import OnlineOfflineIndicator from './OnlineOfflineIndicator';
 import { LanguageProvider } from '../context/LanguageContext';
+
+import { useOnlineStatus } from '../hooks/useOnlineStatus';
 
 // Mock the useOnlineStatus hook
 jest.mock('../hooks/useOnlineStatus', () => ({
   useOnlineStatus: jest.fn(),
 }));
-
-import { useOnlineStatus } from '../hooks/useOnlineStatus';
 
 const mockUseOnlineStatus = useOnlineStatus as jest.MockedFunction<
   typeof useOnlineStatus

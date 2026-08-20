@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import type { Metric } from 'web-vitals';
 
 const PerformanceMonitor = styled.div`
   position: fixed;
@@ -60,7 +61,7 @@ const PerformanceMetrics: React.FC = () => {
       return;
     }
 
-    const handleVital = (vital: any) => {
+    const handleVital = (vital: Metric) => {
       setVitals(prev => {
         const existing = prev.findIndex(v => v.name === vital.name);
         const newVital = {

@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { waitFor, screen } from '@testing-library/dom';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import App from './App';
 import fetchMock from 'jest-fetch-mock';
@@ -37,7 +37,7 @@ describe('App Component', () => {
 
     // Check that the app renders basic UI elements
     expect(screen.getByText('Latest News')).toBeInTheDocument();
-    
+
     // Should render skip link
     expect(screen.getByText('Skip to main content')).toBeInTheDocument();
   });

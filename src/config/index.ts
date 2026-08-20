@@ -27,8 +27,7 @@ export const config = {
     name: process.env.REACT_APP_NAME || "User Unknown's News",
     version: process.env.REACT_APP_VERSION || '2.0.0',
     defaultLanguage: (process.env.REACT_APP_DEFAULT_LANGUAGE || 'en') as
-      | 'en'
-      | 'de',
+      'en' | 'de',
   },
 
   // Performance Configuration
