@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { screen, fireEvent, waitFor } from '@testing-library/dom';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react';
 import PWAInstallPrompt from './PWAInstallPrompt';
 
@@ -32,7 +32,7 @@ describe('PWAInstallPrompt', () => {
     // Simulate beforeinstallprompt event
     const event = new Event('beforeinstallprompt');
     Object.assign(event, mockPromptEvent);
-    
+
     await act(async () => {
       window.dispatchEvent(event);
     });
@@ -49,16 +49,14 @@ describe('PWAInstallPrompt', () => {
     const event = new Event('beforeinstallprompt');
     Object.assign(event, mockPromptEvent);
     (window as any).deferredPrompt = mockPromptEvent;
-    
+
     await act(async () => {
       window.dispatchEvent(event);
     });
 
     const installButton = screen.getByText('Install');
-    
-    await act(async () => {
-      fireEvent.click(installButton);
-    });
+
+    fireEvent.click(installButton);
 
     await waitFor(() => {
       expect(mockPromptEvent.prompt).toHaveBeenCalled();
@@ -71,7 +69,7 @@ describe('PWAInstallPrompt', () => {
     // Simulate beforeinstallprompt event
     const beforeEvent = new Event('beforeinstallprompt');
     Object.assign(beforeEvent, mockPromptEvent);
-    
+
     await act(async () => {
       window.dispatchEvent(beforeEvent);
     });
@@ -80,7 +78,7 @@ describe('PWAInstallPrompt', () => {
 
     // Simulate appinstalled event
     const installedEvent = new Event('appinstalled');
-    
+
     await act(async () => {
       window.dispatchEvent(installedEvent);
     });
@@ -96,16 +94,14 @@ describe('PWAInstallPrompt', () => {
     // Simulate beforeinstallprompt event
     const event = new Event('beforeinstallprompt');
     Object.assign(event, mockPromptEvent);
-    
+
     await act(async () => {
       window.dispatchEvent(event);
     });
 
     const closeButton = screen.getByText('Not Now');
-    
-    await act(async () => {
-      fireEvent.click(closeButton);
-    });
+
+    fireEvent.click(closeButton);
 
     expect(screen.queryByText('📱 Install App')).not.toBeInTheDocument();
   });

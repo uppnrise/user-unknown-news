@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { screen, fireEvent } from '@testing-library/dom';
+import { screen } from '@testing-library/react';
 import SkipLink from './SkipLink';
 
 export {}; // Make this a module
